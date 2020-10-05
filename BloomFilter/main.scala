@@ -1,9 +1,9 @@
 import java.io.FileNotFoundException
-import BloomFilter.BloomFilter
+import BloomFilterPackage.BloomFilter
 import scala.io.Source
 
 
-object Main{
+object MainBloomFilter{
 
   def addElements(bloom: BloomFilter, filename: String): Unit = {
     for (lines <- Source.fromFile(filename).getLines){
