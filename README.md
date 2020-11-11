@@ -1,14 +1,14 @@
 # Stream Processing
 
 1. Bloom Filters
-Represents data by so called the hash table. Each item is hashed and sign of item is saved. This method let us save memory and complexity of data.
+Collection of input data is hashed (MurmurHash3) -> ***hash table*** (represents our input data). Then, we can check if the given item is in the data collection representing by ***hash table***. This method let us save memory and complexity of data.
 ```
-scala MainBloomFilter <sizeOfHashTable> <numberOfHashFunction> <stream.txt> <elementsToCheck>
+scala MainBloomFilter <sizeOfHashTable> <"seeds"> <stream.txt> <elementsToCheck>
 ```
 
 2. Mirsa - Gries Algorithm
-The frequency algorithm finds elements in the stream which occur more than ***streamLength/k*** where ***k*** is the parameter of the algorithm. There is returned ***k-1*** elements.
+The frequency algorithm which finds elements in the stream that occur more than ***streamLength/k***, ***k*** is the parameter of the algorithm. There is returned ***k-1*** elements.
 
 ```
-scala MainMirsaGries <cars.txt> <k>
+scala MainMirsaGries <stream.txt> <k>
 ```

@@ -1,18 +1,12 @@
 package MirsaGriesPackage
-
-trait Item
-
-
-case class Car(carType: String, year: Int) extends Item {
-    override def toString = carType + year
-}
+import scala.collection.mutable.{Map => mutableMap}
 
 
-class MirsaGries(list: List[Item], k: Int){
-  private var counters = MirsaGries
+class MirsaGries(list: List[String], k: Int){
+  private var counters = MirsaGriesAlgorithm
 
-  private def MirsaGries: scala.collection.mutable.Map[Item, Int] = {
-    var counters: scala.collection.mutable.Map[Item, Int] = scala.collection.mutable.Map()
+  private def MirsaGriesAlgorithm: mutableMap[String, Int] = {
+    var counters: mutableMap[String, Int] = mutableMap()
     for (x <- list){
       if(checkElement(x,counters)){
         val winner = find(x,counters)
@@ -34,24 +28,21 @@ class MirsaGries(list: List[Item], k: Int){
     counters
   }
 
-  def checkElement(x: Item, counters: scala.collection.mutable.Map[Item,Int]): Boolean = {
+
+  def checkElement(x: String, counters: mutableMap[String,Int]): Boolean = {
     val result = counters.keys
-    for (countersElement <- result){
-      if(x == countersElement){ return true }
-    }
+    for (countersElement <- result) if(x == countersElement) return true
     return false
   }
 
-  def find(x: Item, counters: scala.collection.mutable.Map[Item,Int]): Item = {
+  def find(x: String, counters: mutableMap[String,Int]): String = {
     val result = counters.keys
-    for (countersElement <- result){
-      if(x == countersElement){ return countersElement }
-    }
-    return x
+    for (countersElement <- result) if(x == countersElement) countersElement
+    x
   }
 
-  def get(): Unit = {
-    println(counters)
+  def getCounters(): mutableMap[String,Int] = {
+    counters
   }
 
 }

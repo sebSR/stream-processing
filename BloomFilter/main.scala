@@ -6,37 +6,37 @@ import scala.io.Source
 object MainBloomFilter{
 
   def addElements(bloom: BloomFilter, filename: String): Unit = {
-    for (lines <- Source.fromFile(filename).getLines){
-      bloom.add(lines)
-    }
+    for (lines <- Source.fromFile(filename).getLines) bloom.add(lines)
   }
 
   def falsePositiveProbabilityPrint(bloom: BloomFilter): Unit = {
     val p = bloom.falsePositiveProbability()
-    println(s"Probability of false positive: $p")
+    val cast = p-(p%0.01)
+    println(f"Probability of false positive: ${cast}")
+  }
+
+  def elementsCheckPrint(bloom: BloomFilter, args: Array[String]): Unit = {
+    for(indexInArgs <- 3 to args.length-1){
+      val element = args(indexInArgs)
+      val result = bloom.check(element)
+      println(s"element: $element -> $result")
+    }
   }
 
   def main(args: Array[String]){
 
-    def elementsCheckPrint(bloom: BloomFilter): Unit = {
-      for(indexInArgs <- 3 to args.length-1){
-        val element = args(indexInArgs)
-        val result = bloom.check(element)
-        println(s"element $element -> $result")
-      }
-    }
-
     if (args.length != 0){
         val sizeOfHashTable = args(0)
-        val numberOfHashFunction = args(1)
-        val filename = args(2)
-        val numberOfElements = Source.fromFile(filename).getLines.size
+        val listOfSeeds = args(1).split(",").map(_.toInt).toList
+        val streamFileName = args(2)
+        val numberOfElements = Source.fromFile(streamFileName).getLines.size
 
-        val bloom = new BloomFilter(sizeOfHashTable.toInt, numberOfElements, numberOfHashFunction.toInt)
+        val bloom = new BloomFilter(sizeOfHashTable.toInt, numberOfElements, listOfSeeds)
 
-        addElements(bloom, filename)
+        addElements(bloom, streamFileName)
         falsePositiveProbabilityPrint(bloom)
-        elementsCheckPrint(bloom)
+        elementsCheckPrint(bloom, args)
     }
   }
+
 }
