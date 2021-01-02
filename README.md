@@ -12,3 +12,9 @@ The frequency algorithm which finds elements in the stream that occur more than 
 ```
 run MirsaGries <k: Int>
 ```
+
+3. HyperLogLog Algorithm
+Let's calculate the number of distinct elements. *(Parameter b describes first bits.)
+```
+run HyperLogLog <b: Int>
+```

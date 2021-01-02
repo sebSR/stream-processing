@@ -1,5 +1,6 @@
 import BloomFilterPackage.BloomFilter
 import MirsaGriesPackage.MirsaGries
+import HyperLogLogPackage.HyperLogLog
 import java.io.FileNotFoundException
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
@@ -8,16 +9,22 @@ import scala.io.Source
 object MainBloomFilter{
 
   def main(args: Array[String]){
+
     val streamFile = "./src/main/resources/stream.txt"
+
     if (args(0) == "BloomFilter"){
       runBloomFilter(args, streamFile)
     }
     else if(args(0) == "MirsaGries"){
       runMirsaGries(args, streamFile)
     }
+    else if(args(0) == "HyperLogLog"){
+      runHyperLogLog(args, streamFile)
+    }
     else{
       println("Wrong command")
     }
+    
   }
 
   def runBloomFilter(args: Array[String], streamFile: String): Unit = {
@@ -25,7 +32,7 @@ object MainBloomFilter{
     val listOfSeeds = args(2).split(",").map(_.toInt).toList
     val numberOfElements = Source.fromFile(streamFile).getLines.size
     val bloom = new BloomFilter(sizeOfHashTable.toInt, numberOfElements, listOfSeeds)
-    addElements(bloom, streamFile)
+    for (lines <- Source.fromFile(streamFile).getLines) bloom.add(lines)
     falsePositiveProbabilityPrint(bloom)
     elementsCheckPrint(bloom, args)
   }
@@ -38,18 +45,21 @@ object MainBloomFilter{
     println(frequency.getCounters())
   }
 
-  def addElements(bloom: BloomFilter, filename: String): Unit = {
-    for (lines <- Source.fromFile(filename).getLines) bloom.add(lines)
+  def runHyperLogLog(args: Array[String], streamFile: String): Unit = {
+    val b = args(1).toInt
+    val hll = new HyperLogLog(b)
+    for (lines <- Source.fromFile(streamFile).getLines) hll.add(lines)
+    println(s"Number of different items: ${hll.cardinality()} \n")
   }
 
   def falsePositiveProbabilityPrint(bloom: BloomFilter): Unit = {
     val p = bloom.falsePositiveProbability()
-    val cast = p-(p%0.01)
+    val cast = p - (p % 0.01)
     println(f"Probability of false positive: ${cast}")
   }
 
   def elementsCheckPrint(bloom: BloomFilter, args: Array[String]): Unit = {
-    for(indexInArgs <- 3 to args.length-1){
+    for(indexInArgs <- 3 to args.length - 1){
       val element = args(indexInArgs)
       val result = bloom.check(element)
       println(s"element: $element -> $result")

@@ -1,0 +1,5 @@
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(run HyperLogLog 10, Some(c29aef2b-b459-410d-846e-02f0e137886c), Some(CommandSource(console0)))[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: Compile / run[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: Signal, check cycles: false, forcegc: true[0m[0J
+[0m[[0m[32msuccess[0m] [0m[0mTotal time: 0 s, completed 2021-01-02 23:57:27[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(shell, None, None)[0m[0J
